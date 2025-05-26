@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Chemistry Paper 2 - Organic and Physical Chemistry Quiz</title>
+    
+    <!-- Google Analytics -->
+    <!-- REPLACE 'GA_MEASUREMENT_ID' BELOW WITH YOUR ACTUAL GOOGLE ANALYTICS ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .exam-container {
+            background: white;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .exam-header {
+            background: #2e7d32;
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+        }
+        
+        .exam-header h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .exam-info {
+            background: #e8f5e9;
+            padding: 20px 30px;
+            border-bottom: 2px solid #2e7d32;
+        }
+        
+        .exam-info h2 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .timer-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #d32f2f;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .timer-warning {
+            background: #ff9800 !important;
+            animation: pulse 2s infinite;
+        }
+        
+        .timer-critical {
+            background: #f44336 !important;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .start-screen {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .start-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .start-btn:hover {
+            background: #388e3c;
+        }
+        
+        .exam-content {
+            padding: 30px;
+            display: none;
+        }
+        
+        .exam-content.active {
+            display: block;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        
+        .question-marks {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .question-text {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .options {
+            margin-left: 20px;
+        }
+        
+        .option {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+        
+        .option label {
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        
+        .controls {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 20px;
+            border-top: 2px solid #2e7d32;
+            text-align: center;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #388e3c;
+        }
+        
+        .btn-secondary {
+            background: #666;
+        }
+        
+        .btn-secondary:hover {
+            background: #888;
+        }
+        
+        .results {
+            padding: 30px;
+            text-align: center;
+            display: none;
+        }
+        
+        .results.active {
+            display: block;
+        }
+        
+        .score-display {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #2e7d32;
+        }
+        
+        .grade-display {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .correct {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #f44336;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #2e7d32;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .data-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-container">
+        <div class="exam-header">
+            <h1>AS Level Chemistry</h1>
+            <p>Paper 2 - Organic and Physical Chemistry</p>
+        </div>
+        
+        <div class="exam-info">
+            <h2>Instructions to Students</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span><strong>Time allowed:</strong></span>
+                    <span>90 minutes</span>
+                </div>
+                <div class="info-item">
+                    <span><strong>Total marks:</strong></span>
+                    <span>80 marks</span>
+                </div>
+                <div class="info-item">
+                    <span><strong>Number of questions:</strong></span>
+                    <span>80 questions</span>
+                </div>
+                <div class="info-item">
+                    <span><strong>Question type:</strong></span>
+                    <span>Multiple choice</span>
+                </div>
+            </div>
+            <p><strong>Answer all questions.</strong> For each question, select the best answer from the options given.</p>
+            <p>Each question is worth 1 mark. There is no negative marking.</p>
+            <p><strong>Focus areas:</strong> Organic Chemistry (alkanes, alkenes, alcohols, halogenoalkanes) and Physical Chemistry (thermodynamics, kinetics, equilibria).</p>
+            <p><strong>Note:</strong> This quiz uses the actual June 2024 AQA AS Chemistry grade boundaries for authentic assessment.</p>
+        </div>
+        
+        <div class="timer-display" id="timerDisplay">
+            Time Remaining: 90:00
+        </div>
+        
+        <div class="start-screen" id="startScreen">
+            <h2>Ready to Begin?</h2>
+            <p>You have 90 minutes to complete 80 challenging multiple choice questions.</p>
+            <p>This paper focuses on <strong>Organic and Physical Chemistry</strong> topics from the AS specification.</p>
+            <p>Once you start, the timer will begin and cannot be paused.</p>
+            <br>
+            <button class="start-btn" id="startExamBtn">Start Exam</button>
+        </div>
+        
+        <div class="exam-content" id="examContent">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div id="questionsContainer">
+                <!-- Questions will be inserted here -->
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Exam Complete</h2>
+            <div class="score-display" id="scoreDisplay"></div>
+            <div class="grade-display" id="gradeDisplay"></div>
+            <button class="btn" onclick="showReview()">Review Answers</button>
+            <button class="btn btn-secondary" onclick="resetExam()">Retake Exam</button>
+        </div>
+        
+        <div class="controls" id="controls" style="display: none;">
+            <button class="btn" id="submitExam">Submit Exam</button>
+            <button class="btn btn-secondary" onclick="resetExam()">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // Physical Chemistry - Thermodynamics (20 questions)
+            {
+                number: 1,
+                text: "The standard enthalpy of formation (ΔH°f) is defined as:",
+                marks: 1,
+                options: [
+                    "A. The enthalpy change when 1 mole of a compound is formed from its elements in their standard states",
+                    "B. The enthalpy change when 1 mole of a compound is completely burned in oxygen",
+                    "C. The enthalpy change when 1 mole of a compound dissolves in water",
+                    "D. The enthalpy change when 1 mole of bonds are broken"
+                ],
+                correct: 0
+            },
+            {
+                number: 2,
+                text: "Using the bond enthalpies: C-C = 347 kJ mol⁻¹, C-H = 413 kJ mol⁻¹, O=O = 498 kJ mol⁻¹, C=O = 805 kJ mol⁻¹, O-H = 464 kJ mol⁻¹. Calculate the enthalpy of combustion of ethane (C₂H₆):",
+                marks: 1,
+                options: [
+                    "A. -1367 kJ mol⁻¹",
+                    "B. -1560 kJ mol⁻¹", 
+                    "C. -2877 kJ mol⁻¹",
+                    "D. -3120 kJ mol⁻¹"
+                ],
+                correct: 0
+            },
+            {
+                number: 3,
+                text: "Which statement about entropy is correct?",
+                marks: 1,
+                options: [
+                    "A. Entropy decreases when a solid melts",
+                    "B. Entropy is always positive for spontaneous processes",
+                    "C. Entropy measures the disorder in a system",
+                    "D. Entropy is independent of temperature"
+                ],
+                correct: 2
+            },
+            {
+                number: 4,
+                text: "The lattice energy of NaCl is the energy required to:",
+                marks: 1,
+                options: [
+                    "A. Form NaCl(s) from Na(s) and Cl₂(g)",
+                    "B. Convert NaCl(s) to gaseous Na⁺ and Cl⁻ ions",
+                    "C. Form NaCl(s) from gaseous Na⁺ and Cl⁻ ions",
+                    "D. Dissolve NaCl(s) in water"
+                ],
+                correct: 1
+            },
+            {
+                number: 5,
+                text: "In a calorimetry experiment, 2.0 g of ethanol is burned and heats 250 g of water from 18°C to 65°C. If the specific heat capacity of water is 4.18 J g⁻¹ K⁻¹, what is the enthalpy of combustion of ethanol? (Mr of ethanol = 46)",
+                marks: 1,
+                options: [
+                    "A. -1130 kJ mol⁻¹",
+                    "B. -1200 kJ mol⁻¹",
+                    "C. -1300 kJ mol⁻¹",
+                    "D. -1400 kJ mol⁻¹"
+                ],
+                correct: 0
+            },
+            {
+                number: 6,
+                text: "Born-Haber cycles are used to calculate:",
+                marks: 1,
+                options: [
+                    "A. Bond enthalpies",
+                    "B. Lattice energies",
+                    "C. Activation energies",
+                    "D. Reaction rates"
+                ],
+                correct: 1
+            },
+            {
+                number: 7,
+                text: "Which process is always endothermic?",
+                marks: 1,
+                options: [
+                    "A. Bond formation",
+                    "B. Bond breaking",
+                    "C. Neutralization",
+                    "D. Crystallization"
+                ],
+                correct: 1
+            },
+            {
+                number: 8,
+                text: "The enthalpy of atomization of chlorine (½Cl₂ → Cl) is +121 kJ mol⁻¹. What is the bond enthalpy of Cl₂?",
+                marks: 1,
+                options: [
+                    "A. +121 kJ mol⁻¹",
+                    "B. +242 kJ mol⁻¹",
+                    "C. -121 kJ mol⁻¹",
+                    "D. -242 kJ mol⁻¹"
+                ],
+                correct: 1
+            },
+            {
+                number: 9,
+                text: "Which factor affects the magnitude of lattice energy?",
+                marks: 1,
+                options: [
+                    "A. Size of ions only",
+                    "B. Charge on ions only",
+                    "C. Both size and charge of ions",
+                    "D. Temperature only"
+                ],
+                correct: 2
+            },
+            {
+                number: 10,
+                text: "The standard enthalpy of formation of H₂O(l) is -286 kJ mol⁻¹. This means:",
+                marks: 1,
+                options: [
+                    "A. 286 kJ is absorbed when 1 mol of H₂O forms",
+                    "B. 286 kJ is released when 1 mol of H₂O forms",
+                    "C. 286 kJ is the bond enthalpy of O-H",
+                    "D. Water is unstable"
+                ],
+                correct: 1
+            },
+            {
+                number: 11,
+                text: "Which compound has the most negative enthalpy of hydration?",
+                marks: 1,
+                options: [
+                    "A. Li⁺",
+                    "B. Na⁺",
+                    "C. K⁺",
+                    "D. Cs⁺"
+                ],
+                correct: 0
+            },
+            {
+                number: 12,
+                text: "The enthalpy change for the process Na⁺(g) + e⁻ → Na(g) is:",
+                marks: 1,
+                options: [
+                    "A. First ionization energy",
+                    "B. Negative of first ionization energy",
+                    "C. Electron affinity",
+                    "D. Lattice energy"
+                ],
+                correct: 1
+            },
+            {
+                number: 13,
+                text: "Mean bond enthalpies are used because:",
+                marks: 1,
+                options: [
+                    "A. Bond enthalpies are the same in all molecules",
+                    "B. Bond enthalpies vary depending on the molecular environment",
+                    "C. They are easier to measure",
+                    "D. They are always more accurate"
+                ],
+                correct: 1
+            },
+            {
+                number: 14,
+                text: "Which statement about Hess's Law is correct?",
+                marks: 1,
+                options: [
+                    "A. It only applies to exothermic reactions",
+                    "B. The enthalpy change is independent of the route taken",
+                    "C. It can only be used for standard conditions",
+                    "D. It requires a catalyst to be present"
+                ],
+                correct: 1
+            },
+            {
+                number: 15,
+                text: "The enthalpy of vaporization of water is +41 kJ mol⁻¹. What energy is required to convert 9.0 g of water to steam at 100°C?",
+                marks: 1,
+                options: [
+                    "A. 20.5 kJ",
+                    "B. 41 kJ",
+                    "C. 82 kJ",
+                    "D. 369 kJ"
+                ],
+                correct: 0
+            },
+            {
+                number: 16,
+                text: "Which process has the most positive entropy change?",
+                marks: 1,
+                options: [
+                    "A. H₂O(s) → H₂O(l)",
+                    "B. H₂O(l) → H₂O(g)",
+                    "C. N₂(g) + 3H₂(g) → 2NH₃(g)",
+                    "D. 2H₂(g) + O₂(g) → 2H₂O(l)"
+                ],
+                correct: 1
+            },
+            {
+                number: 17,
+                text: "The lattice energy of MgO is much greater than that of NaCl because:",
+                marks: 1,
+                options: [
+                    "A. Mg²⁺ is larger than Na⁺",
+                    "B. O²⁻ is larger than Cl⁻",
+                    "C. MgO has doubly charged ions",
+                    "D. MgO is more covalent"
+                ],
+                correct: 2
+            },
+            {
+                number: 18,
+                text: "Standard conditions for thermodynamic measurements are:",
+                marks: 1,
+                options: [
+                    "A. 0°C and 1 atm",
+                    "B. 25°C and 1 atm",
+                    "C. 25°C and 1 bar",
+                    "D. 100°C and 1 bar"
+                ],
+                correct: 2
+            },
+            {
+                number: 19,
+                text: "The enthalpy of solution becomes more negative when:",
+                marks: 1,
+                options: [
+                    "A. Lattice energy increases",
+                    "B. Hydration energy becomes more negative",
+                    "C. Both lattice and hydration energies increase",
+                    "D. The compound becomes less soluble"
+                ],
+                correct: 1
+            },
+            {
+                number: 20,
+                text: "Which equation represents the lattice energy of CaF₂?",
+                marks: 1,
+                options: [
+                    "A. Ca(s) + F₂(g) → CaF₂(s)",
+                    "B. Ca²⁺(g) + 2F⁻(g) → CaF₂(s)",
+                    "C. CaF₂(s) → Ca²⁺(g) + 2F⁻(g)",
+                    "D. Ca²⁺(aq) + 2F⁻(aq) → CaF₂(s)"
+                ],
+                correct: 2
+            },
+
+            // Physical Chemistry - Kinetics (15 questions)
+            {
+                number: 21,
+                text: "The rate equation for a reaction is: rate = k[A]²[B]. If [A] is tripled and [B] is doubled, the new rate will be:",
+                marks: 1,
+                options: [
+                    "A. 6 times the original rate",
+                    "B. 12 times the original rate",
+                    "C. 18 times the original rate",
+                    "D. 36 times the original rate"
+                ],
+                correct: 2
+            },
+            {
+                number: 22,
+                text: "The activation energy can be determined from:",
+                marks: 1,
+                options: [
+                    "A. A Maxwell-Boltzmann distribution curve",
+                    "B. An Arrhenius plot of ln k vs 1/T",
+                    "C. The rate equation",
+                    "D. The equilibrium constant"
+                ],
+                correct: 1
+            },
+            {
+                number: 23,
+                text: "A catalyst increases the rate of reaction by:",
+                marks: 1,
+                options: [
+                    "A. Increasing the activation energy",
+                    "B. Providing an alternative pathway with lower activation energy",
+                    "C. Increasing the temperature",
+                    "D. Changing the equilibrium position"
+                ],
+                correct: 1
+            },
+            {
+                number: 24,
+                text: "The order of reaction with respect to A in the rate equation rate = k[A]⁰[B]² is:",
+                marks: 1,
+                options: [
+                    "A. 0",
+                    "B. 1",
+                    "C. 2",
+                    "D. 3"
+                ],
+                correct: 0
+            },
+            {
+                number: 25,
+                text: "Which factor does NOT affect the rate constant (k)?",
+                marks: 1,
+                options: [
+                    "A. Temperature",
+                    "B. Catalyst",
+                    "C. Concentration",
+                    "D. Activation energy"
+                ],
+                correct: 2
+            },
+            {
+                number: 26,
+                text: "The half-life of a first-order reaction is 20 minutes. After 60 minutes, what fraction of the original reactant remains?",
+                marks: 1,
+                options: [
+                    "A. 1/4",
+                    "B. 1/6",
+                    "C. 1/8",
+                    "D. 1/3"
+                ],
+                correct: 2
+            },
+            {
+                number: 27,
+                text: "Increasing temperature increases reaction rate because:",
+                marks: 1,
+                options: [
+                    "A. More particles have energy ≥ activation energy",
+                    "B. The activation energy decreases",
+                    "C. More collisions occur only",
+                    "D. The equilibrium shifts right"
+                ],
+                correct: 0
+            },
+            {
+                number: 28,
+                text: "For the reaction A + B → products, doubling [A] doubles the rate, and tripling [B] triples the rate. The rate equation is:",
+                marks: 1,
+                options: [
+                    "A. rate = k[A][B]",
+                    "B. rate = k[A]²[B]",
+                    "C. rate = k[A][B]²",
+                    "D. rate = k[A]²[B]²"
+                ],
+                correct: 0
+            },
+            {
+                number: 29,
+                text: "The rate-determining step is:",
+                marks: 1,
+                options: [
+                    "A. The first step in the mechanism",
+                    "B. The last step in the mechanism",
+                    "C. The slowest step in the mechanism",
+                    "D. The step with the most reactants"
+                ],
+                correct: 2
+            },
+            {
+                number: 30,
+                text: "Which statement about collision theory is correct?",
+                marks: 1,
+                options: [
+                    "A. All collisions lead to reaction",
+                    "B. Only head-on collisions are effective",
+                    "C. Particles must collide with sufficient energy and correct orientation",
+                    "D. Temperature doesn't affect collision frequency"
+                ],
+                correct: 2
+            },
+            {
+                number: 31,
+                text: "The units of the rate constant for a second-order reaction are:",
+                marks: 1,
+                options: [
+                    "A. s⁻¹",
+                    "B. mol dm⁻³ s⁻¹",
+                    "C. dm³ mol⁻¹ s⁻¹",
+                    "D. dm⁶ mol⁻² s⁻¹"
+                ],
+                correct: 2
+            },
+            {
+                number: 32,
+                text: "In the Maxwell-Boltzmann distribution, increasing temperature:",
+                marks: 1,
+                options: [
+                    "A. Shifts the peak to higher energy with same area under curve",
+                    "B. Shifts the peak to lower energy",
+                    "C. Increases the area under the curve",
+                    "D. Makes the curve narrower"
+                ],
+                correct: 0
+            },
+            {
+                number: 33,
+                text: "A reaction has a rate equation: rate = k[X][Y]². The overall order is:",
+                marks: 1,
+                options: [
+                    "A. 1",
+                    "B. 2",
+                    "C. 3",
+                    "D. 4"
+                ],
+                correct: 2
+            },
+            {
+                number: 34,
+                text: "Which change would have the greatest effect on increasing reaction rate?",
+                marks: 1,
+                options: [
+                    "A. Doubling the concentration",
+                    "B. Increasing temperature by 10°C",
+                    "C. Adding a catalyst",
+                    "D. Increasing pressure"
+                ],
+                correct: 2
+            },
+            {
+                number: 35,
+                text: "The Arrhenius equation shows the relationship between:",
+                marks: 1,
+                options: [
+                    "A. Rate and concentration",
+                    "B. Rate constant and temperature",
+                    "C. Rate and pressure",
+                    "D. Rate constant and concentration"
+                ],
+                correct: 1
+            },
+
+            // Physical Chemistry - Equilibria (15 questions)
+            {
+                number: 36,
+                text: "For the equilibrium N₂(g) + 3H₂(g) ⇌ 2NH₃(g), the equilibrium constant expression Kc is:",
+                marks: 1,
+                options: [
+                    "A. [NH₃]² / [N₂][H₂]³",
+                    "B. [N₂][H₂]³ / [NH₃]²",
+                    "C. [NH₃] / [N₂][H₂]",
+                    "D. 2[NH₃] / [N₂] + 3[H₂]"
+                ],
+                correct: 0
+            },
+            {
+                number: 37,
+                text: "If Kc > 1 for a reaction, this means:",
+                marks: 1,
+                options: [
+                    "A. The reaction is fast",
+                    "B. The equilibrium lies to the right",
+                    "C. The reaction is exothermic",
+                    "D. The activation energy is low"
+                ],
+                correct: 1
+            },
+            {
+                number: 38,
+                text: "For the reaction 2SO₂(g) + O₂(g) ⇌ 2SO₃(g) ΔH = -197 kJ mol⁻¹, which change would increase the yield of SO₃?",
+                marks: 1,
+                options: [
+                    "A. Increasing temperature",
+                    "B. Decreasing pressure",
+                    "C. Adding a catalyst",
+                    "D. Increasing pressure"
+                ],
+                correct: 3
+            },
+            {
+                number: 39,
+                text: "Le Chatelier's principle states that when a system at equilibrium is disturbed, the system will:",
+                marks: 1,
+                options: [
+                    "A. Speed up to reach equilibrium faster",
+                    "B. Shift to oppose the change",
+                    "C. Always shift to the right",
+                    "D. Stop reacting"
+                ],
+                correct: 1
+            },
+            {
+                number: 40,
+                text: "Adding a catalyst to an equilibrium system will:",
+                marks: 1,
+                options: [
+                    "A. Shift equilibrium to the right",
+                    "B. Shift equilibrium to the left",
+                    "C. Not affect the position of equilibrium",
+                    "D. Increase the equilibrium constant"
+                ],
+                correct: 2
+            },
+            {
+                number: 41,
+                text: "For the equilibrium PCl₅(g) ⇌ PCl₃(g) + Cl₂(g), at 250°C, Kc = 0.04. If [PCl₅] = 0.2 mol dm⁻³ and [PCl₃] = [Cl₂] = 0.1 mol dm⁻³, the reaction will:",
+                marks: 1,
+                options: [
+                    "A. Be at equilibrium",
+                    "B. Proceed to the right",
+                    "C. Proceed to the left",
+                    "D. Stop completely"
+                ],
+                correct: 2
+            },
+            {
+                number: 42,
+                text: "The equilibrium constant Kc is affected by:",
+                marks: 1,
+                options: [
+                    "A. Concentration only",
+                    "B. Pressure only", 
+                    "C. Temperature only",
+                    "D. Catalysts only"
+                ],
+                correct: 2
+            },
+            {
+                number: 43,
+                text: "For an endothermic reaction at equilibrium, increasing temperature will:",
+                marks: 1,
+                options: [
+                    "A. Increase Kc",
+                    "B. Decrease Kc",
+                    "C. Not affect Kc",
+                    "D. Make Kc = 1"
+                ],
+                correct: 0
+            },
+            {
+                number: 44,
+                text: "Dynamic equilibrium means:",
+                marks: 1,
+                options: [
+                    "A. The forward reaction has stopped",
+                    "B. The reverse reaction has stopped",
+                    "C. Forward and reverse rates are equal",
+                    "D. Concentrations are changing"
+                ],
+                correct: 2
+            },
+            {
+                number: 45,
+                text: "For the equilibrium H₂(g) + I₂(g) ⇌ 2HI(g), doubling the volume of the container will:",
+                marks: 1,
+                options: [
+                    "A. Shift equilibrium to the left",
+                    "B. Shift equilibrium to the right", 
+                    "C. Not affect the equilibrium position",
+                    "D. Double the equilibrium constant"
+                ],
+                correct: 2
+            },
+            {
+                number: 46,
+                text: "The expression for Kp for the reaction N₂O₄(g) ⇌ 2NO₂(g) is:",
+                marks: 1,
+                options: [
+                    "A. p(NO₂)² / p(N₂O₄)",
+                    "B. p(N₂O₄) / p(NO₂)²",
+                    "C. 2p(NO₂) / p(N₂O₄)",
+                    "D. p(NO₂) / p(N₂O₄)"
+                ],
+                correct: 0
+            },
+            {
+                number: 47,
+                text: "For the Haber process: N₂ + 3H₂ ⇌ 2NH₃, which conditions favor maximum yield?",
+                marks: 1,
+                options: [
+                    "A. High temperature, low pressure",
+                    "B. Low temperature, high pressure",
+                    "C. High temperature, high pressure",
+                    "D. Low temperature, low pressure"
+                ],
+                correct: 1
+            },
+            {
+                number: 48,
+                text: "If the equilibrium constant for A ⇌ B is 4, what is the equilibrium constant for B ⇌ A?",
+                marks: 1,
+                options: [
+                    "A. 4",
+                    "B. 0.25",
+                    "C. 16",
+                    "D. -4"
+                ],
+                correct: 1
+            },
+            {
+                number: 49,
+                text: "For a gaseous equilibrium, increasing pressure will favor the side with:",
+                marks: 1,
+                options: [
+                    "A. More moles of gas",
+                    "B. Fewer moles of gas",
+                    "C. Equal moles of gas",
+                    "D. Higher molecular mass"
+                ],
+                correct: 1
+            },
+            {
+                number: 50,
+                text: "The unit of Kc for the reaction 2A(g) + B(g) ⇌ C(g) is:",
+                marks: 1,
+                options: [
+                    "A. mol dm⁻³",
+                    "B. (mol dm⁻³)²",
+                    "C. (mol dm⁻³)⁻²",
+                    "D. No units"
+                ],
+                correct: 2
+            },
+
+            // Organic Chemistry - Alkanes (10 questions)
+            {
+                number: 51,
+                text: "Which statement about alkanes is correct?",
+                marks: 1,
+                options: [
+                    "A. They are unsaturated hydrocarbons",
+                    "B. They contain C=C double bonds",
+                    "C. They have the general formula CₙH₂ₙ₊₂",
+                    "D. They readily undergo addition reactions"
+                ],
+                correct: 2
+            },
+            {
+                number: 52,
+                text: "The process of cracking converts:",
+                marks: 1,
+                options: [
+                    "A. Short alkanes to longer alkanes",
+                    "B. Long alkanes to shorter alkanes and alkenes",
+                    "C. Alkenes to alkanes",
+                    "D. Alkanes to cycloalkanes"
+                ],
+                correct: 1
+            },
+            {
+                number: 53,
+                text: "Methane reacts with chlorine in the presence of UV light. The overall equation is CH₄ + Cl₂ → CH₃Cl + HCl. This is an example of:",
+                marks: 1,
+                options: [
+                    "A. Addition reaction",
+                    "B. Substitution reaction",
+                    "C. Elimination reaction",
+                    "D. Oxidation reaction"
+                ],
+                correct: 1
+            },
+            {
+                number: 54,
+                text: "The first step in the free radical substitution of methane with chlorine is:",
+                marks: 1,
+                options: [
+                    "A. CH₄ → CH₃• + H•",
+                    "B. Cl₂ → 2Cl•",
+                    "C. CH₄ + Cl• → CH₃• + HCl",
+                    "D. CH₃• + Cl₂ → CH₃Cl + Cl•"
+                ],
+                correct: 1
+            },
+            {
+                number: 55,
+                text: "Which alkane has the highest boiling point?",
+                marks: 1,
+                options: [
+                    "A. Methane",
+                    "B. Ethane",
+                    "C. Propane",
+                    "D. Butane"
+                ],
+                correct: 3
+            },
+            {
+                number: 56,
+                text: "Thermal cracking is carried out at:",
+                marks: 1,
+                options: [
+                    "A. Low temperature, high pressure",
+                    "B. High temperature, low pressure",
+                    "C. High temperature, high pressure",
+                    "D. Low temperature, low pressure"
+                ],
+                correct: 2
+            },
+            {
+                number: 57,
+                text: "The complete combustion of propane produces:",
+                marks: 1,
+                options: [
+                    "A. CO and H₂O",
+                    "B. CO₂ and H₂",
+                    "C. CO₂ and H₂O",
+                    "D. C and H₂O"
+                ],
+                correct: 2
+            },
+            {
+                number: 58,
+                text: "Free radicals are:",
+                marks: 1,
+                options: [
+                    "A. Charged species",
+                    "B. Species with unpaired electrons",
+                    "C. Stable molecules",
+                    "D. Ionic compounds"
+                ],
+                correct: 1
+            },
+            {
+                number: 59,
+                text: "The branching of alkane chains affects:",
+                marks: 1,
+                options: [
+                    "A. Boiling point only",
+                    "B. Density only",
+                    "C. Both boiling point and density",
+                    "D. Neither boiling point nor density"
+                ],
+                correct: 2
+            },
+            {
+                number: 60,
+                text: "Catalytic cracking uses:",
+                marks: 1,
+                options: [
+                    "A. High temperature and pressure",
+                    "B. Low temperature and zeolite catalyst",
+                    "C. Moderate temperature and zeolite catalyst",
+                    "D. High pressure only"
+                ],
+                correct: 2
+            },
+
+            // Organic Chemistry - Alkenes (10 questions)
+            {
+                number: 61,
+                text: "Alkenes are:",
+                marks: 1,
+                options: [
+                    "A. Saturated hydrocarbons",
+                    "B. Unsaturated hydrocarbons with C≡C",
+                    "C. Unsaturated hydrocarbons with C=C",
+                    "D. Aromatic compounds"
+                ],
+                correct: 2
+            },
+            {
+                number: 62,
+                text: "The test for alkenes uses:",
+                marks: 1,
+                options: [
+                    "A. Acidified potassium dichromate",
+                    "B. Bromine water",
+                    "C. Silver nitrate solution",
+                    "D. Sodium hydroxide solution"
+                ],
+                correct: 1
+            },
+            {
+                number: 63,
+                text: "The addition of HBr to propene follows:",
+                marks: 1,
+                options: [
+                    "A. Anti-Markovnikov's rule",
+                    "B. Markovnikov's rule",
+                    "C. Zaitsev's rule",
+                    "D. No specific rule"
+                ],
+                correct: 1
+            },
+            {
+                number: 64,
+                text: "Which reaction produces an alkene?",
+                marks: 1,
+                options: [
+                    "A. Dehydration of alcohols",
+                    "B. Hydration of alkynes",
+                    "C. Hydrogenation of alkynes",
+                    "D. Oxidation of alkanes"
+                ],
+                correct: 0
+            },
+            {
+                number: 65,
+                text: "The reaction C₂H₄ + H₂ → C₂H₆ is an example of:",
+                marks: 1,
+                options: [
+                    "A. Substitution",
+                    "B. Elimination",
+                    "C. Addition",
+                    "D. Oxidation"
+                ],
+                correct: 2
+            },
+            {
+                number: 66,
+                text: "Ethene reacts with steam in the presence of phosphoric acid to form:",
+                marks: 1,
+                options: [
+                    "A. Ethanol",
+                    "B. Ethanoic acid",
+                    "C. Ethanal",
+                    "D. Diethyl ether"
+                ],
+                correct: 0
+            },
+            {
+                number: 67,
+                text: "The polymer formed from ethene is:",
+                marks: 1,
+                options: [
+                    "A. Polystyrene",
+                    "B. Poly(ethene)",
+                    "C. PVC",
+                    "D. Nylon"
+                ],
+                correct: 1
+            },
+            {
+                number: 68,
+                text: "E/Z isomerism in alkenes requires:",
+                marks: 1,
+                options: [
+                    "A. A C=C double bond only",
+                    "B. Different groups on each carbon of the C=C",
+                    "C. The same groups on each carbon of the C=C",
+                    "D. A benzene ring"
+                ],
+                correct: 1
+            },
+            {
+                number: 69,
+                text: "Addition polymerization of alkenes involves:",
+                marks: 1,
+                options: [
+                    "A. Breaking of C=C bonds and formation of C-C bonds",
+                    "B. Formation of C=O bonds",
+                    "C. Elimination of water",
+                    "D. Breaking of C-H bonds"
+                ],
+                correct: 0
+            },
+            {
+                number: 70,
+                text: "The major product of the reaction between 2-methylpropene and HCl is:",
+                marks: 1,
+                options: [
+                    "A. 1-chloro-2-methylpropane",
+                    "B. 2-chloro-2-methylpropane",
+                    "C. 1-chloropropane",
+                    "D. 2-chloropropane"
+                ],
+                correct: 1
+            },
+
+            // Organic Chemistry - Alcohols (10 questions)
+            {
+                number: 71,
+                text: "Primary alcohols can be oxidized to form:",
+                marks: 1,
+                options: [
+                    "A. Ketones only",
+                    "B. Aldehydes only",
+                    "C. Aldehydes then carboxylic acids",
+                    "D. Carboxylic acids only"
+                ],
+                correct: 2
+            },
+            {
+                number: 72,
+                text: "The reagent used to oxidize alcohols is:",
+                marks: 1,
+                options: [
+                    "A. Potassium dichromate in acidic solution",
+                    "B. Sodium hydroxide",
+                    "C. Bromine water",
+                    "D. Silver nitrate"
+                ],
+                correct: 0
+            },
+            {
+                number: 73,
+                text: "Ethanol can be produced industrially by:",
+                marks: 1,
+                options: [
+                    "A. Fermentation only",
+                    "B. Hydration of ethene only",
+                    "C. Both fermentation and hydration of ethene",
+                    "D. Oxidation of ethane"
+                ],
+                correct: 2
+            },
+            {
+                number: 74,
+                text: "The elimination of water from alcohols produces:",
+                marks: 1,
+                options: [
+                    "A. Alkanes",
+                    "B. Alkenes",
+                    "C. Ethers",
+                    "D. Esters"
+                ],
+                correct: 1
+            },
+            {
+                number: 75,
+                text: "Secondary alcohols are oxidized to:",
+                marks: 1,
+                options: [
+                    "A. Aldehydes",
+                    "B. Ketones",
+                    "C. Carboxylic acids",
+                    "D. Primary alcohols"
+                ],
+                correct: 1
+            },
+            {
+                number: 76,
+                text: "Tertiary alcohols:",
+                marks: 1,
+                options: [
+                    "A. Can be easily oxidized",
+                    "B. Cannot be oxidized under mild conditions",
+                    "C. Always form aldehydes when oxidized",
+                    "D. Are the most reactive alcohols"
+                ],
+                correct: 1
+            },
+            {
+                number: 77,
+                text: "The functional group in alcohols is:",
+                marks: 1,
+                options: [
+                    "A. -OH",
+                    "B. -CHO",
+                    "C. -COOH",
+                    "D. C=O"
+                ],
+                correct: 0
+            },
+            {
+                number: 78,
+                text: "Ethanol undergoes combustion to produce:",
+                marks: 1,
+                options: [
+                    "A. CO and H₂O",
+                    "B. CO₂ and H₂",
+                    "C. CO₂ and H₂O",
+                    "D. C and H₂O"
+                ],
+                correct: 2
+            },
+            {
+                number: 79,
+                text: "The dehydration of alcohols requires:",
+                marks: 1,
+                options: [
+                    "A. Concentrated sulfuric acid and heat",
+                    "B. Dilute sulfuric acid",
+                    "C. Sodium hydroxide",
+                    "D. Cold conditions"
+                ],
+                correct: 0
+            },
+            {
+                number: 80,
+                text: "Alcohols have higher boiling points than corresponding alkanes because:",
+                marks: 1,
+                options: [
+                    "A. They have higher molecular mass",
+                    "B. They can form hydrogen bonds",
+                    "C. They are more polar",
+                    "D. They have stronger covalent bonds"
+                ],
+                correct: 1
+            }
+        ];
+
+        let currentAnswers = {};
+        let examStarted = false;
+        let timeRemaining = 90 * 60; // 90 minutes in seconds
+        let timerInterval;
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.style.display = 'block';
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                const displayTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                timerDisplay.textContent = `Time Remaining: ${displayTime}`;
+                
+                if (timeRemaining <= 300) { // Last 5 minutes
+                    timerDisplay.className = 'timer-display timer-critical';
+                } else if (timeRemaining <= 900) { // Last 15 minutes
+                    timerDisplay.className = 'timer-display timer-warning';
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmit();
+                }
+            }, 1000);
+        }
+
+        function startExam() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('examContent').classList.add('active');
+            document.getElementById('controls').style.display = 'block';
+            examStarted = true;
+            startTimer();
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exam_started', {
+                    'event_category': 'Exam',
+                    'event_label': 'AS Chemistry Paper 2 Started'
+                });
+            }
+        }
+
+        function autoSubmit() {
+            alert('Time is up! Your exam will be automatically submitted.');
+            submitExam();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="question-header">
+                        <span class="question-number">${q.number}.</span>
+                        <span class="question-marks">[${q.marks} mark]</span>
+                    </div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option">
+                                <input type="radio" id="q${index}_opt${optIndex}" name="q${index}" value="${optIndex}">
+                                <label for="q${index}_opt${optIndex}">${option}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="feedback-${index}"></div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function updateProgress() {
+            const answeredQuestions = Object.keys(currentAnswers).length;
+            const progressPercent = (answeredQuestions / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+        }
+
+        function getGrade(percentage) {
+            // June 2024 AQA AS Chemistry grade boundaries (out of 160 marks)
+            // Converted to percentages for our 80-question quiz
+            if (percentage >= 72) return 'A';  // 115/160 = 72%
+            if (percentage >= 64) return 'B';  // 102/160 = 64%
+            if (percentage >= 56) return 'C';  // 89/160 = 56%  
+            if (percentage >= 48) return 'D';  // 77/160 = 48%
+            if (percentage >= 41) return 'E';  // 65/160 = 41%
+            return 'U';
+        }
+
+        function getGradeColor(grade) {
+            const colors = {
+                'A': '#4caf50', 'B': '#66bb6a', 'C': '#8bc34a', 
+                'D': '#ffc107', 'E': '#ff9800', 'U': '#f44336'
+            };
+            return colors[grade] || '#666';
+        }
+
+        function submitExam() {
+            // Collect all answers
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected) {
+                    currentAnswers[index] = parseInt(selected.value);
+                }
+            });
+
+            // Calculate score
+            let correctCount = 0;
+            questions.forEach((q, index) => {
+                if (currentAnswers[index] === q.correct) {
+                    correctCount++;
+                }
+            });
+
+            const percentage = Math.round((correctCount / questions.length) * 100);
+            const grade = getGrade(percentage);
+            const gradeColor = getGradeColor(grade);
+
+            // Show results
+            document.getElementById('examContent').classList.remove('active');
+            document.getElementById('controls').style.display = 'none';
+            document.getElementById('results').classList.add('active');
+            
+            document.getElementById('scoreDisplay').textContent = 
+                `${correctCount} / ${questions.length} marks (${percentage}%)`;
+            
+            document.getElementById('gradeDisplay').innerHTML = 
+                `<span style="color: ${gradeColor};">Grade: ${grade}</span>`;
+            document.getElementById('gradeDisplay').style.backgroundColor = 
+                gradeColor + '20';
+
+            // Stop timer
+            clearInterval(timerInterval);
+            document.getElementById('timerDisplay').style.display = 'none';
+
+            // Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exam_completed', {
+                    'event_category': 'Exam',
+                    'event_label': `AS Chemistry Paper 2 - Grade: ${grade} (${percentage}%)`,
+                    'value': percentage
+                });
+            }
+        }
+
+        function showReview() {
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('examContent').classList.add('active');
+            
+            // Show feedback for all questions
+            questions.forEach((q, index) => {
+                const feedbackDiv = document.getElementById(`feedback-${index}`);
+                const userAnswer = currentAnswers[index];
+                const isCorrect = userAnswer === q.correct;
+                
+                if (userAnswer !== undefined) {
+                    feedbackDiv.innerHTML = `
+                        <div class="${isCorrect ? 'correct' : 'incorrect'}">
+                            ${isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                            ${!isCorrect ? `<br>Correct answer: ${q.options[q.correct]}` : ''}
+                        </div>
+                    `;
+                }
+            });
+
+            // Disable all inputs
+            const inputs = document.querySelectorAll('input[type="radio"]');
+            inputs.forEach(input => input.disabled = true);
+        }
+
+        function resetExam() {
+            if (confirm('Are you sure you want to reset the exam? All progress will be lost.')) {
+                location.reload();
+            }
+        }
+
+        // Event listeners
+        document.getElementById('startExamBtn').addEventListener('click', startExam);
+        document.getElementById('submitExam').addEventListener('click', submitExam);
+
+        // Track answers for progress
+        document.addEventListener('change', (e) => {
+            if (e.target.type === 'radio') {
+                updateProgress();
+            }
+        });
+
+        // Initialize
+        renderQuestions();
+    </script>
+</body>
+</html>
